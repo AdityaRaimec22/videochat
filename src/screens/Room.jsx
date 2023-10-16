@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useContext } from "react";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
-import { useSocket } from "../context/SocketProvider";
+import SocketContext from "../context/SocketContext";
 
 const RoomPage = () => {
-  const socket = useSocket();
+
+  const {socket} = useContext(SocketContext);
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
@@ -35,8 +36,7 @@ const RoomPage = () => {
       console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
-    },
-    [socket]
+    },[socket]
   );
 
   const sendStreams = useCallback(() => {
@@ -50,8 +50,7 @@ const RoomPage = () => {
       peer.setLocalDescription(ans);
       console.log("Call Accepted!");
       sendStreams();
-    },
-    [sendStreams]
+    },[sendStreams]
   );
 
   const handleNegoNeeded = useCallback(async () => {
@@ -70,8 +69,7 @@ const RoomPage = () => {
     async ({ from, offer }) => {
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
-    },
-    [socket]
+    },[socket]
   );
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {

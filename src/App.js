@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import LobbyScreen from './screens/Lobby';
 import RoomPage from './screens/Room';
+// import SocketProvider from './context/SocketProvider';
 
 function App() {
   return (
+    // <SocketProvider>
     <Router>
       <div className="App">
         <Routes>
@@ -13,6 +15,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    // </SocketProvider>
   );
 }
 

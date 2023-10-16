@@ -1,19 +1,16 @@
-import React, { createContext, useMemo, useContext } from "react";
+import React, { useMemo } from "react";
+import SocketContext from "./SocketContext";
 import { io } from "socket.io-client";
 
-const SocketContext = createContext(null);
+const SocketProvider = (props) => {
 
-export const useSocket = () => {
-  const socket = useContext(SocketContext);
-  return socket;
-};
-
-export const SocketProvider = (props) => {
   const socket = useMemo(() => io("localhost:8000"), []);
 
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={{socket}}>
       {props.children}
     </SocketContext.Provider>
   );
 };
+
+export default SocketProvider
